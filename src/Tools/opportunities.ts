@@ -15,7 +15,7 @@ export function registerOpportunityTool(server: McpServer) {
     async () => {
       const token = await getDataverseToken();
 
-      const url = `https://cloudfronts.crm5.dynamics.com/api/data/v9.2/opportunities?$select=name,estimatedvalue,statuscode,address1_country,createdon&$top=50`;
+      const url = `https://cloudfronts.crm5.dynamics.com/api/data/v9.2/opportunities?$top=50`;
 
       const res = await fetch(url, {
         headers: {
@@ -26,13 +26,14 @@ export function registerOpportunityTool(server: McpServer) {
 
       const data = await res.json();
 
-      if (!data.value || !data.value.length) {
-        return {
-          content: [{ type: "text", text: "No opportunity data found." }],
-        };
-      }
+    //   if (!data.value || !data.value.length) {
+    //     return {
+    //       content: [{ type: "text", text: "No opportunity data found." }],
+    //     };
+    //   }
 
-      
+      console.log("🔍 Raw API response:", JSON.stringify(data, null, 2));
+
       return {
         content: [
           { type: "text", text: `Showing the first ${data.value.length} records:\n${JSON.stringify(data.value, null, 2)}` },
