@@ -15,7 +15,7 @@ export function registerOpportunityTool(server: McpServer) {
     async () => {
       const token = await getDataverseToken();
 
-      const url = `https://cloudfronts.crm5.dynamics.com/api/data/v9.2/opportunities?$top=50&$select=opportunityid,name,estimatedvalue,estimatedclosedate,statuscode,statecode,salesstagecode,stepname,_ownerid_value,_owninguser_value,_customerid_value,createdon,modifiedon`;
+      const url = `https://cloudfronts.crm5.dynamics.com/api/data/v9.2/opportunities?$top=20&$select=opportunityid,name,estimatedvalue,estimatedclosedate,statuscode,statecode,salesstagecode,stepname,_ownerid_value,_owninguser_value,_customerid_value,createdon,modifiedon`;
 
       const res = await fetch(url, {
         headers: {
