@@ -1,0 +1,43 @@
+import { z } from "zod";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { getDataverseToken } from "../services/auth.js";
+
+export function registerOpportunityTool(server: McpServer) {
+  server.tool(
+    "dataversemcp",
+    `
+    Fetch test data from the Opportunity table in Microsoft Dataverse.
+
+    For testing purposes, this tool ignores any user filters and returns
+    the first 50 records from the opportunities table.
+    `,
+    {},
+    async () => {
+      const token = await getDataverseToken();
+
+      const url = `https://cloudfronts.crm5.dynamics.com/api/data/v9.2/opportunities?$select=name,estimatedvalue,statuscode,address1_country,createdon&$top=50`;
+
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (!data.value || !data.value.length) {
+        return {
+          content: [{ type: "text", text: "No opportunity data found." }],
+        };
+      }
+
+      
+      return {
+        content: [
+          { type: "text", text: `Showing the first ${data.value.length} records:\n${JSON.stringify(data.value, null, 2)}` },
+        ],
+      };
+    }
+  );
+}

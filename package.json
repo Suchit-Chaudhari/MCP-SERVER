@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "get-token": "ts-node --esm src/services/auth.ts"
   },
   "files": [
     "build"
@@ -14,18 +15,22 @@
   "bin": {
     "demo": "./dist/server.js"
   },
-  "keywords": [ ],
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@azure/msal-node": "^3.6.0",
     "@modelcontextprotocol/sdk": "^1.11.1",
+    "axios": "^1.9.0",
     "express": "^5.1.0",
     "zod": "^3.24.4"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/node": "^22.15.17",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }
 }
