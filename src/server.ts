@@ -3,92 +3,34 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { z } from "zod";
 import { registerOpportunityTool } from "./Tools/opportunities.js";
+import { getSalesOrderbyNumber } from "./Tools/SalesOrder.js";
+import { text } from "stream/consumers";
+import { register } from "module";
 
 const server = new McpServer({
   name: "mcp-streamable-http",
   version: "1.0.0",
 });
+
 registerOpportunityTool(server);
-// Get Chuck Norris joke tool
-const getChuckJoke = server.tool(
-  "get-chuck-joke",
-  "Get a random Chuck Norris joke",
-  async () => {
-    const response = await fetch("https://api.chucknorris.io/jokes/random");
-    const data = await response.json();
+getSalesOrderbyNumber(server);
+
+const getsalesOrder = server.tool(
+  "get-sales-order",
+  "Get a sales order by its order number",
+  async() => {
     return {
-      content: [
+      content: [  
         {
           type: "text",
-          text: data.value,
-        },
+          text: "This tool retrieves the sales order details including customer information, order status, and total amount.",
+        }
       ],
     };
   }
 );
 
-// Get Chuck Norris joke by category tool
-const getChuckJokeByCategory = server.tool(
-  "get-chuck-joke-by-category",
-  "Get a random Chuck Norris joke by category",
-  {
-    category: z.string().describe("Category of the Chuck Norris joke"),
-  },
-  async (params: { category: string }) => {
-    const response = await fetch(
-      `https://api.chucknorris.io/jokes/random?category=${params.category}`
-    );
-    const data = await response.json();
-    return {
-      content: [
-        {
-          type: "text",
-          text: data.value,
-        },
-      ],
-    };
-  }
-);
 
-// Get Chuck Norris joke categories tool
-const getChuckCategories = server.tool(
-  "get-chuck-categories",
-  "Get all available categories for Chuck Norris jokes",
-  async () => {
-    const response = await fetch("https://api.chucknorris.io/jokes/categories");
-    const data = await response.json();
-    return {
-      content: [
-        {
-          type: "text",
-          text: data.join(", "),
-        },
-      ],
-    };
-  }
-);
-
-// Get Dad joke tool
-const getDadJoke = server.tool(
-  "get-dad-joke",
-  "Get a random dad joke",
-  async () => {
-    const response = await fetch("https://icanhazdadjoke.com/", {
-      headers: {
-        Accept: "application/json",
-      },
-    });
-    const data = await response.json();
-    return {
-      content: [
-        {
-          type: "text",
-          text: data.joke,
-        },
-      ],
-    };
-  }
-);
 
 const app = express();
 app.use(express.json());
