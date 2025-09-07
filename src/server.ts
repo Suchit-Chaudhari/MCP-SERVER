@@ -6,7 +6,7 @@ import { z } from "zod";
 import { registerOpportunityTool } from "./Tools/opportunities.js";
 import { getSalesOrderbyNumber } from "./Tools/SalesOrder.js";
 
-const API_KEY = "e8792e5503e74bfbb8a71435251108";
+const API_KEY = "e8792e5503e74bfbb8a71435251108"; 
 
 const server = new McpServer({
   name: "mcp-streamable-http",
